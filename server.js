@@ -1,29 +1,34 @@
-const http = require('http');
-const fs = require('fs');
+const express = require('express');
+const path = require('path');
+const app = express();
 
-const homePage = fs.readFileSync('index.html');
-const aboutPage = fs.readFileSync('about.html');
-const menuPage = fs.readFileSync('menu.html');
-const orderPage = fs.readFileSync('order.html');
-const errorPage = fs.readFileSync('error.html');
-
-server = http.createServer((req, res) => {
-    if (req.url === '/'){
-        res.end(homePage);
-    }
-    else if(req.url === '/about'){
-        res.end(aboutPage);
-    }
-    else if(req.url === '/menu'){
-        res.end(menuPage);
-    }
-    else if(req.url === '/order'){
-        res.end(orderPage);
-    }
-    else{
-        res.writeHead(404);
-        res.end(errorPage);
-    }
+app.listen(3000, () => {
+    console.log('App is connected to port 3000');
 });
 
-server.listen(3000);
+app.use(express.static('public'));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'index.html'));
+});
+
+app.get('/about', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'about.html'));
+});
+
+app.get('/error', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'error.html'));
+});
+
+app.get('/menu', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'menu.html'));
+});
+
+app.get('/about', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'about.html'));
+})
+
+app.get('/order.html', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'order.html'));
+})
+
